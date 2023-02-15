@@ -1,13 +1,29 @@
 import random
 
 # TEST ARRAYS
-simple = [4, 7,  2, 5, 4, 0]
+simple = [4, 7, 2, 5, 4, 0]
+simple2 = [10, 80, 30, 90, 40, 50, 70]
 any_numbers = random.sample(range(1, 1000), 42)
 already_sorted = [1, 2, 3, 4, 5, 6, 9, 20, 22, 23, 28, 
                     32, 34, 39, 40, 42, 76, 87, 99, 112]
 inversed = [117, 90, 88, 83, 81, 77, 74, 69, 64, 63, 51,
             50, 49, 42, 41, 34, 32, 29, 28, 22, 16, 8, 6, 5, 3, 1]
 repeated = [7, 7, 7, 7, 7, 1, 1, 9, 9, 0, 4, 4, 4, 5, 4, 5, 7, 1,]
+
+
+def serialize(arr):
+    """Serialize an array into a format the visualizer can understand."""
+    formatted = {
+        "kind": {"grid": True},
+        "rows": [
+            {
+                "columns": [
+                    {"content": str(value), "tag": str(value)} for value in arr
+                ],
+            }
+        ],
+    }
+    return formatted
 
 
 
@@ -64,8 +80,8 @@ def selectionsort(arr):
                 arr[ie] = arr[ii]
                 arr[ii] = tmp
     
-selectionsort(simple)
-print(simple)
+# selectionsort(already_sorted)
+# print(already_sorted)
 
 
 #######################
@@ -103,5 +119,40 @@ def prn(lista, inicio, meio, fim):
 
 # mergesort(inversed)
 # print(inversed)
+
+
+#######################
+#      QUICK SORT     #
+#######################
+def quicksort(lista, inicio=0, fim=None):
+    if fim == None:
+        fim = len(lista) - 1    # excluindo o pivor, que será o último elemento
+    if inicio < fim:
+        p = parition(lista, inicio, fim)
+        # recursivamente na sublista à esquerda (menores)
+        quicksort(lista, inicio, p - 1)
+        # recursivamente na sublista à direita (maiores)
+        quicksort(lista, p, fim)
+                
+
+def parition(lista, inicio, fim):
+    pivot = lista[fim]
+    i = inicio
+    for j in range(inicio, fim):
+        # j sempre avança, pois representa o elementa em análise
+        # e delimita os elementos maiores que o pivô
+        if lista[j] <= pivot:
+            tmp = lista[i]
+            lista[i] = lista[j]
+            lista[j] = tmp
+            i = i + 1
+    tmp2 = lista[i]
+    lista[i] = lista[fim]
+    lista[fim] = tmp2
+    return i
+
+quicksort(simple2)
+print(simple2)        
+
 
 
